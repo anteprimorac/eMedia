@@ -1,0 +1,344 @@
+/*
+	Filename: apimage.js
+	Description: Javascript of APImage mod for SMF 2.x.x and SMF 1.1.x
+	
+	Mod: APImage
+	Mod demo: http://smf.anteprimorac.from.hr/index.php?topic=2.0
+	Mod version: 0.3.1
+	Compatible: SMF 2.x.x and SMF 1.1.x
+	
+	Author: Ante Primorac
+	Author URI: http://anteprimorac.from.hr
+*/
+
+.apimage {
+	background: #f5f5f5;
+	border: solid 1px #c0c0c0;
+	margin: 5px;
+	padding: 5px;
+	text-align: center;
+	color: transparent;
+	overflow: hidden;
+	cursor: pointer;
+}
+.apimage .image {
+	overflow: hidden;
+}
+.apimage .image img {
+	image-rendering: optimizeQuality;
+	-ms-interpolation-mode: bicubic;
+}
+.apimage.failed {
+	font-family: Arial, sans;
+	font-size: 14px;
+	font-weight: bold;
+	color: #c0c0c0;
+	text-shadow: #FFF 1px 0 1px;
+	cursor: default;
+	word-wrap: break-word;
+	white-space: normal;
+}
+.apimage .hover {
+	display: none;
+	position: absolute;
+	opacity: .8;
+	background: rgba(0, 0, 0, .4) url(../images/apimage/enlarge.png) center center no-repeat;
+	z-index: 5;
+}
+.apimage:hover .hover {
+	display: block;
+}
+.apimage .watermark {
+	display: block;
+	position: relative;
+}
+.apimage .watermark div {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	width: 32px;
+	height: 28px;
+	opacity: .8;
+	background: url(../images/apimage/watermark.png) no-repeat;
+}
+.apimage.loading, .apimage-show.loading {
+	background-image: url(../images/apimage/loader.gif);
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+.apimage-show {
+	position: fixed;
+	background: #000;
+	z-index: 999;
+}
+.apimage-show .actions {
+	position: absolute;
+	width: 105px;
+	height: 25px;
+	right: 0;
+	color: #FFF;
+	z-index: 1000;
+}
+.apimage-show .actions div {
+	float: left;
+	width: 25px;
+	height: 25px;
+	opacity: .5;
+	margin-right: 10px;
+}
+.apimage-show .actions div:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+.apimage-show .actions .close {
+	background: #000 url(../images/apimage/close.png) no-repeat center center;
+}
+.apimage-show .actions .fullscreen {
+	background: #000 url(../images/apimage/fullscreen.png) no-repeat center center;
+}
+.apimage-show .actions .fullscreen.off {
+	background: #000 url(../images/apimage/out-fullscreen.png) no-repeat center center;
+}
+.apimage-show .actions .slideshow {
+	background: #000 url(../images/apimage/slideshow.png) no-repeat center center;
+}
+.apimage-show .actions .slideshow.off {
+	background: #000 url(../images/apimage/slideshow-stop.png) no-repeat center center;
+}
+.apimage-show .watermark {
+	display: block;
+	position: relative;
+}
+.apimage-show .watermark div {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	width: 64px;
+	height: 55px;
+	opacity: .8;
+	background: url(../images/apimage/big-watermark.png) no-repeat;
+}
+.apimage-show .image img {
+	border: solid 1px #000;
+}
+.apimage-showbg {
+	position: fixed;
+	background: rgba(0, 0, 0, .85);
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 998;
+}
+.apimage-show .ads {
+	display: block;
+	position: relative;
+	margin: 10px auto;
+	width: 468px;
+	height: 60px;
+}
+.apimage-show .ads .close {
+	display: none;
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 12px;
+	height: 12px;
+	opacity: .5;
+	background: url(../images/apimage/ads-close.png) no-repeat;
+	cursor: pointer;
+	z-index: 9999;
+}
+.apimage-show .ads .close:hover {
+	opacity: .8;
+}
+.apimage-show.fullscreen .ads {
+	margin-top: -65px;
+}
+.apimage-show.fullscreen .ads .close {
+	display: block;
+}
+
+
+/* APImage Gallery */
+.apimage-gallery {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background: #000;
+	border: solid 2px #000;
+}
+.apimage-gallery .viewer {
+	width: 100%;
+	cursor: pointer;
+}
+.apimage-gallery .viewer .left, .apimage-gallery .viewer .right, .apimage-show .prev, .apimage-show .next {
+	position: absolute;
+	margin-top: -50%;
+	width: 41px;
+	height: 42px;
+	background: url(../images/apimage/arrow.png) no-repeat;
+	opacity: .8;
+	cursor: pointer;
+	z-index: 4;
+}
+.apimage-gallery .viewer .left, .apimage-show .prev {
+	margin-left: 0;
+}
+.apimage-gallery .viewer .right, .apimage-show .next {
+	margin-right: 0;
+	background-position: 0 -42px;
+}
+.apimage-gallery .viewer .left:hover, .apimage-gallery .viewer .right:hover, .apimage-show .prev:hover, .apimage-show .next:hover {
+	opacity: 1;
+}
+.apimage-gallery .viewer .watermark {
+	display: block;
+	position: relative;
+}
+.apimage-gallery .viewer .watermark div {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	width: 64px;
+	height: 55px;
+	opacity: .8;
+	background: url(../images/apimage/big-watermark.png) no-repeat;
+}
+.apimage-show .prev, .apimage-show .next {z-index: 1000}
+.apimage-gallery .images {
+	padding: 10px 0;
+	background: #111;
+	overflow: auto;
+}
+.apimage-gallery .images .list {
+	width: auto;
+	white-space: nowrap;
+}
+/* Webkit scrollbar */
+.apimage-gallery .images::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+.apimage-gallery .images::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.4);
+	-webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.10),inset 0 -1px 0 rgba(255, 255, 255, 0.07);
+	cursor: pointer;
+}
+.apimage-gallery .images::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255, 255, 255, .8);
+	-webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.40),inset 0 -1px 0 rgba(255, 255, 255, 0.28);
+}
+.apimage-gallery .images::-webkit-scrollbar-button {
+	display: none;
+	width: 0;
+	height: 0;
+}
+.apimage-gallery .images::-webkit-scrollbar-corner {
+	background-color: transparent;
+}
+/* Scrollbar */
+.apimage-gallery.tinyscrollbar .images.viewport {
+	overflow: hidden;
+	position: relative;
+	margin: 10px 0 0 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.apimage-gallery.tinyscrollbar .images.viewport .list.overview {
+	list-style: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.apimage-gallery.tinyscrollbar .scrollbar {
+	position: relative;
+	width: 8px;
+	height: 8px;
+	background: #111;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.apimage-gallery.tinyscrollbar .track {
+	position: relative;
+	padding: 0 1px;
+	height: 100%;
+	width: 100%;
+}
+.apimage-gallery.tinyscrollbar .thumb {
+	position: absolute;
+	top: 0;
+	height: 8px;
+	width: 8px;
+	background-color: rgba(255, 255, 255, 0.4);
+	-webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.10),inset 0 -1px 0 rgba(255, 255, 255, 0.07);
+	cursor: pointer;
+	overflow: hidden;
+}
+.apimage-gallery.tinyscrollbar .thumb:hover {
+	background-color: rgba(255, 255, 255, .8);
+	-webkit-box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.40),inset 0 -1px 0 rgba(255, 255, 255, 0.28);
+	cursor: pointer;
+}
+.apimage-gallery.tinyscrollbar .thumb .end {
+	overflow: hidden;
+	height: 5px;
+	width: 8px;
+}
+.apimage-gallery.tinyscrollbar .disable{
+	display: none;
+}
+
+.apimage-gallery .images .list .apimage {
+	display: inline-block;
+	background: #333;
+	border: solid 1px #000;
+	margin: 0 5px;
+}
+.apimage-gallery .images .list .apimage .watermark div {
+	width: 18px;
+	height: 16px;
+	background: url(../images/apimage/small-watermark.png) no-repeat;
+}
+.apimage-gallery .images .list .apimage.current, .apimage-gallery .images .list .apimage:hover {
+	background: #555;
+}
+.apimage-gallery .images .list .apimage:hover .hover {
+	display: none;
+}
+.apimage-gallery .images .list .apimage.failed {
+	line-height: 22px;
+}
+/* Text align to float */
+div[style="text-align: left;"] .apimage {
+	float: left;
+}
+div[style="text-align: right;"] .apimage {
+	float: right;
+}
+div[style="text-align: center;"] .apimage {
+	margin: 5px auto;
+}
+
+/* Disable floating */
+div[style="text-align: left;"]:after, div[style="text-align: right;"]:after, div[style="text-align: center;"]:after, div[style="text-align: center;"]:before, .apimage-gallery:after {
+	content: ".";
+	display: block;
+	visibility: hidden;
+	height: 0;
+	clear: both;
+}
+

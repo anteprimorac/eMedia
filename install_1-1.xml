@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>anteprimorac:apimage</id>
+	<version>0.3.1</version>
+
+	<file name="$sourcedir/ModSettings.php">
+		<operation>
+			<search position="before"><![CDATA[$config_vars = array(]]></search>
+			<add><![CDATA[
+			// APImage options
+			array('check', 'apimage_enabled'),
+			array('check', 'apimage_watermark_enabled'),
+			array('int', 'apimage_thumb_maxwidth'),
+			array('int', 'apimage_thumb_maxheight'),
+			array('check', 'apimage_thumb_watermark'),
+			array('int', 'apimage_gallery_viewer_maxheight'),
+			array('check', 'apimage_gallery_viewer_watermark'),
+			array('int', 'apimage_gallery_thumb_maxwidth'),
+			array('int', 'apimage_gallery_thumb_maxheight'),
+			array('check', 'apimage_gallery_thumb_watermark'),
+			array('int', 'apimage_show_maxwidth'),
+			array('int', 'apimage_show_maxheight'),
+			array('check', 'apimage_show_watermark'),
+		'',]]></add>
+		</operation>
+	</file>
+	
+	<file name="$sourcedir/Subs.php">
+		<operation>
+			<search position="replace"><![CDATA[array(
+				'tag' => 'img',
+				'type' => 'unparsed_content',
+				'parameters' => array(
+					'alt' => array('optional' => true),
+					'width' => array('optional' => true, 'value' => ' width="$1"', 'match' => '(\d+)'),
+					'height' => array('optional' => true, 'value' => ' height="$1"', 'match' => '(\d+)'),
+				),
+				'content' => '<img src="$1" alt="{alt}"{width}{height} border="0" />',
+				'validate' => create_function('&$tag, &$data, $disabled', '
+					$data = strtr($data, array(\'<br />\' => \'\'));
+					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
+						$data = \'http://\' . $data;
+				'),
+				'disabled_content' => '($1)',
+			),
+			array(
+				'tag' => 'img',
+				'type' => 'unparsed_content',
+				'content' => '<img src="$1" alt="" border="0" />',
+				'validate' => create_function('&$tag, &$data, $disabled', '
+					$data = strtr($data, array(\'<br />\' => \'\'));
+					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
+						$data = \'http://\' . $data;
+				'),
+				'disabled_content' => '($1)',
+			),]]></search>
+			<add><![CDATA[array(
+				'tag' => 'img',
+				'type' => 'unparsed_content',
+				'parameters' => array(
+					'off' => array('optional' => true, 'validate' => create_function('&$off', '
+						if(strtolower($off) == "true") $off = " data-off=\"true\"";
+						else $off = "";
+						return $off;'),),
+					'alt' => array('optional' => true, 'value' => ' data-alt="$1"'),
+					'width' => array('optional' => true, 'value' => ' data-width="$1"', 'match' => '(\d+)'),
+					'height' => array('optional' => true, 'value' => ' data-height="$1"', 'match' => '(\d+)'),
+				),
+				'content' => '<div class="apimage loading" data-image="$1"{off}{alt}{width}{height}>$1</div>',
+				'validate' => create_function('&$tag, &$data, $disabled', '
+					$data = strtr($data, array(\'<br />\' => \'\'));
+					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
+						$data = \'http://\' . $data;
+				'),
+				'trim' => 'both',
+				'disabled_content' => '($1)',
+			),
+			array(
+				'tag' => 'img',
+				'type' => 'unparsed_content',
+				'content' => '<div class="apimage loading" data-image="$1">$1</div>',
+				'validate' => create_function('&$tag, &$data, $disabled', '
+					$data = strtr($data, array(\'<br />\' => \'\'));
+					if (strpos($data, \'http://\') !== 0 && strpos($data, \'https://\') !== 0)
+						$data = \'http://\' . $data;
+				'),
+				'trim' => 'both',
+				'disabled_content' => '($1)',
+			),
+			array(
+				'tag' => 'gallery',
+				'before' => '<div class="apimage-gallery"><div class="viewer"><div class="watermark"><div></div></div><div class="image"></div><div class="left"></div><div class="right"></div></div><div class="images viewport"><div class="list overview">',
+				'after' => '</div></div><div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div></div>',
+				'require_children' => array('img'),
+				'block_level' => true,
+				'trim' => 'inside',
+			),]]></add>
+		</operation>
+	</file>
+
+	<file name="$themedir/index.template.php">
+		<operation>
+			<search position="before"><![CDATA[// Output any remaining HTML headers. (from mods, maybe?)]]></search>
+			<add><![CDATA[
+	// APImage
+	echo '<link rel="stylesheet" type="text/css" href="' . $settings['default_theme_url'] . '/css/apimage.css" />';
+	if(!empty($modSettings['apimage_enabled'])) {
+		if(empty($modSettings['apimage_watermark_enabled']) || (!empty($modSettings['apimage_watermark_enabled']) && (empty($modSettings['apimage_thumb_watermark']) || empty($modSettings['apimage_gallery_viewer_watermark']) || empty($modSettings['apimage_gallery_thumb_watermark']) || empty($modSettings['apimage_show_watermark'])))) {
+			echo '<style type="text/css">';
+			if(empty($modSettings['apimage_watermark_enabled']) || empty($modSettings['apimage_thumb_watermark']))
+				echo '.apimage .watermark div {background: none transparent}';
+			if(empty($modSettings['apimage_watermark_enabled']) || empty($modSettings['apimage_gallery_viewer_watermark']))
+				echo '.apimage-gallery .viewer .watermark div {background: none transparent}';
+			if(empty($modSettings['apimage_watermark_enabled']) || empty($modSettings['apimage_gallery_thumb_watermark']))
+				echo '.apimage-gallery .images .list .apimage .watermark div  {background: none transparent;}';
+			if(empty($modSettings['apimage_watermark_enabled']) || empty($modSettings['apimage_show_watermark']))
+				echo '.apimage-show .watermark div {background: none transparent;}';
+			echo '</style>';
+		}
+	}
+	echo '
+<script type="text/javascript">if(!window.jQuery || parseFloat($().jquery) < 1.7) document.write(unescape("%3Cscript src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\"%3E%3C/script%3E"))</script>';
+	echo '<script language="javascript" type="text/javascript">
+		var APImage_options = {
+			"enabled": '.(!empty($modSettings['apimage_enabled']) ? 'true' : 'false').',
+			"watermark": '. (!empty($modSettings['apimage_watermark_enabled']) ? 'true' : 'false') .',
+			"thumb_max_width":  '.(int) $modSettings['apimage_thumb_maxwidth'].',
+			"thumb_max_height":  '.(int) $modSettings['apimage_thumb_maxheight'].',
+			"thumb_watermark": '.(!empty($modSettings['apimage_thumb_watermark']) ? 'true' : 'false').',
+			"gallery_viewer_max_height":  '.(int) $modSettings['apimage_gallery_viewer_maxheight'].',
+			"gallery_viewer_watermark": '.(!empty($modSettings['apimage_gallery_viewer_watermark']) ? 'true' : 'false').',
+			"gallery_thumb_max_width":  '.(int) $modSettings['apimage_gallery_thumb_maxwidth'].',
+			"gallery_thumb_max_height":  '.(int) $modSettings['apimage_gallery_thumb_maxheight'].',
+			"gallery_thumb_watermark": '.(!empty($modSettings['apimage_gallery_thumb_watermark']) ? 'true' : 'false').',
+			"show_max_width":  '.(int) $modSettings['apimage_show_maxwidth'].',
+			"show_max_height":  '.(int) $modSettings['apimage_show_maxheight'].',
+			"show_watermark": '.(!empty($modSettings['apimage_show_watermark']) ? 'true' : 'false').'
+		};</script>
+<script type="text/javascript" src="'.$settings['default_theme_url'].'/apimage.js"></script>';]]></add>
+		</operation>
+	</file>
+	
+	<file name="$themedir/Post.template.php" error="skip">
+		<operation>
+			<search position="before"><![CDATA[if (typeof(smf_codeFix) != "undefined")
+					smf_codeFix();]]></search>
+			<add><![CDATA[
+			
+				// Call APImage
+				$("body").APImage();]]></add>
+		</operation>
+
+		<operation>
+			<search position="before"><![CDATA[$context['bbc_tags'][] = array(
+			'flash' => array('code' => 'flash', 'before' => '[flash=200,200]', 'after' => '[/flash]', 'description' => $txt[433]),
+			'img' => array('code' => 'img', 'before' => '[img]', 'after' => '[/img]', 'description' => $txt[435]),]]></search>
+			<add><![CDATA[
+			'gallery' => array('code' => 'gallery', 'before' => '[gallery]', 'after' => '[/gallery]', 'description' => $txt['apimage_gallery_txt']),]]></add>
+		</operation>
+	</file>
+	
+	<file name="$themedir/scripts/xml_topic.js" error="skip">
+		<operation>
+			<search position="before"><![CDATA[document.forms.quickModForm.subject.style.border = error.getAttribute("in_subject") == "1" ? "1px solid red" : "";
+	}]]></search>
+			<add><![CDATA[
+	
+	// Call APImage
+	$("body").APImage();]]></add>
+		</operation>
+	</file>
+</modification>

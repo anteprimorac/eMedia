@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>anteprimorac:apimage</id>
+	<version>0.3.1</version>
+
+	<file name="$languagedir/Modifications.english-utf8.php" error="skip">
+		<operation>
+			<search position="end"></search>
+                        <add><![CDATA[
+// APImage
+$txt['apimage_enabled'] = 'Enable APImage';
+$txt['apimage_watermark_enabled'] = 'Enable watermark';
+$txt['apimage_thumb_maxwidth'] = 'Maximum thumb width<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_thumb_maxheight'] = 'Maximum thumb height<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_thumb_watermark'] = 'Enable thumb watermark';
+$txt['apimage_gallery_viewer_maxheight'] = 'Maximum gallery viewer height<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_gallery_viewer_watermark'] = 'Enable gallery viewer watermark';
+$txt['apimage_gallery_thumb_maxwidth'] = 'Maximum gallery thumb width<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_gallery_thumb_maxheight'] = 'Maximum gallery thumb height<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_gallery_thumb_watermark'] = 'Enable gallery thumb watermark';
+$txt['apimage_show_maxwidth'] = 'Maximum show width<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_show_maxheight'] = 'Maximum show height<br /><span class="smalltext">Leave blank or set on "0" for disable this.</span>';
+$txt['apimage_show_watermark'] = 'Enable show watermark';]]></add>
+		</operation>
+	</file>	
+	<file name="$languagedir/Modifications.croatian-utf8.php" error="skip">
+		<operation>
+			<search position="end"></search>
+                        <add><![CDATA[
+// APImage
+$txt['apimage_enabled'] = 'Aktiviraj APImage';
+$txt['apimage_watermark_enabled'] = 'Aktiviraj watermark';
+$txt['apimage_thumb_maxwidth'] = 'Maksimalna širina thumb-a<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_thumb_maxheight'] = 'Maksimalna visina thumb-a<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_thumb_watermark'] = 'Aktiviraj watermark na thumb-u';
+$txt['apimage_gallery_viewer_maxheight'] = 'Maksimalna visina preglednika u galeriji<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_gallery_viewer_watermark'] = 'Aktiviraj watermark na pregledniku u galeriji';
+$txt['apimage_gallery_thumb_maxwidth'] = 'Maksimalna širina thumb-a u galeriji<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_gallery_thumb_maxheight'] = 'Maksimalna visina thumb-a u galeriji<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_gallery_thumb_watermark'] = 'Aktiviraj watermark na thumb-u u galeriji';
+$txt['apimage_show_maxwidth'] = 'Maksimalna širina prikaza uvećane slike<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_show_maxheight'] = 'Maksimalna visina prikaza uvećane slike<br /><span class="smalltext">Ako želiš isključiti ovu opciju onda ostavi prazno ili postavi na "0".</span>';
+$txt['apimage_show_watermark'] = 'Aktiviraj watermark na prikazu uvećane slike';]]></add>
+		</operation>
+	</file>
+
+	<file name="$languagedir/Post.english-utf8.php" error="skip">
+		<operation>
+			<search position="end"></search>
+                        <add><![CDATA[
+// APImage
+$txt['apimage_gallery_txt'] = 'Insert Gallery';]]></add>
+		</operation>
+	</file>
+	<file name="$languagedir/Post.croatian-utf8.php" error="skip">
+		<operation>
+			<search position="end"></search>
+                        <add><![CDATA[
+// APImage
+$txt['apimage_gallery_txt'] = 'Umetni Galeriju';]]></add>
+		</operation>
+	</file>
+</modification>

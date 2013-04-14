@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>anteprimorac:apimage</id>
+	<name>APImage</name>
+	<version>0.3.1</version>
+	<type>modification</type>
+	
+	<install for="1.1 - 1.1.99">
+		<readme parsebbc="true">readme.txt</readme>
+		<modification>install_1-1.xml</modification>
+		<modification>language.xml</modification>
+		<modification>language-utf8.xml</modification>
+		<require-file name="apimage.js" destination="$themedir" />
+		<require-file name="apimage.css" destination="$themedir/css" />
+		<require-dir name="apimage" destination="$imagesdir" />
+		<require-file name="gallery.gif" destination="$imagesdir/bbc" />
+		<code>ap_settings_1-1.php</code>
+		<redirect url="$boardurl/index.php?action=featuresettings">Redirecting you to set the settings!</redirect>
+	</install>
+
+	<uninstall for="1.1 - 1.1.99">
+		<modification reverse="true">install_1-1.xml</modification>
+		<modification reverse="true">language.xml</modification>
+		<modification reverse="true">language-utf8.xml</modification>
+		<remove-file name="$themedir/apimage.js" />
+		<remove-file name="$themedir/css/apimage.css" />
+		<remove-dir name="$imagesdir/apimage" />
+		<remove-file name="$imagesdir/bbc/gallery.gif" />
+	</uninstall>
+	
+	<install for="2.0 - 2.0.99">
+		<readme parsebbc="true">readme.txt</readme>
+		<modification>install.xml</modification>
+		<modification>language.xml</modification>
+		<modification>language-utf8.xml</modification>
+		<require-file name="apimage.js" destination="$themedir" />
+		<require-file name="apimage.css" destination="$themedir/css" />
+		<require-dir name="apimage" destination="$imagesdir" />
+		<require-file name="gallery.gif" destination="$imagesdir/bbc" />
+		<database>ap_settings.php</database>
+		<redirect url="$boardurl/index.php?action=admin;area=featuresettings;">Redirecting you to set the settings!</redirect>
+	</install>
+
+	<uninstall for="2.0 - 2.0.99">
+		<modification reverse="true">install.xml</modification>
+		<modification reverse="true">language.xml</modification>
+		<modification reverse="true">language-utf8.xml</modification>
+		<remove-file name="$themedir/apimage.js" />
+		<remove-file name="$themedir/css/apimage.css" />
+		<remove-dir name="$imagesdir/apimage" />
+		<remove-file name="$imagesdir/bbc/gallery.gif" />
+	</uninstall>
+</package-info>
